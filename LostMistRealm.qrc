@@ -1,0 +1,17 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+<qresource>
+    <file alias="grass.png">resources/images/tiles/Grass.png</file>
+    <file alias="path.png">resources/images/tiles/path.png</file>
+    <file alias="tree.png">resources/images/tiles/tree.png</file>
+    <file alias="water.png">resources/images/tiles/water.png</file>
+    <file alias="stone.png">resources/images/tiles/stone.png</file>
+    <file alias="start.png">resources/images/tiles/start.png</file>
+    <file alias="end.png">resources/images/tiles/end.png</file>
+    <file alias="door.png">resources/images/tiles/door.png</file>
+    <file alias="key.png">resources/images/tiles/key.png</file>
+    <file alias="strawberry.png">resources/images/tiles/strawberry.png</file>
+    <file alias="fog.png">resources/images/tiles/fog.png</file>
+    <file alias="player.png">resources/images/player/player.png</file>
+</qresource>
+</RCC>

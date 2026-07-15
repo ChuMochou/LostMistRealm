@@ -1,0 +1,43 @@
+# ===== 构建产物 =====
+build/
+cmake-build-*/
+CMakeLists.txt.user
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.pro.user
+*.pro.user.*
+
+# ===== 编译产物 =====
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# ===== Qt 生成文件 =====
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.qrc.depends
+
+# ===== IDE =====
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-workspace
+*.sublime-project
+
+# ===== OS =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 数据库文件 =====
+*.db
