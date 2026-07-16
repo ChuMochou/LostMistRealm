@@ -28,9 +28,12 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("失落迷雾之境");
 
     // 初始化数据库
-    if (!DatabaseManager::instance().initialize()) {
+    if (!DatabaseManager::instance().initialize())
+    {
         QMessageBox::critical(this, "错误", "数据库初始化失败！");
-    } else {
+    }
+    else
+    {
         // 创建成就系统
         achievementSystem = new AchievementSystem(this);
         connect(achievementSystem, SIGNAL(achievementUnlocked(QString, QString)),
@@ -47,7 +50,8 @@ MainWindow::MainWindow(QWidget *parent)
     // 从本地持久化存储中恢复上次保存的 API Key
     QSettings settings("LostMistRealm", "LostMistRealm");
     QString savedApiKey = settings.value("ai/apiKey").toString();
-    if (!savedApiKey.isEmpty()) {
+    if (!savedApiKey.isEmpty())
+    {
         aiManager->setApiKey(savedApiKey);
     }
     aiManager->setBaseUrl(QStringLiteral("https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"));
@@ -60,22 +64,26 @@ MainWindow::MainWindow(QWidget *parent)
     const int PANEL_WIDTH = 200;
 
     heartPixmap = loadImage("heart.png", "player");
-    if (!heartPixmap.isNull()) {
+    if (!heartPixmap.isNull())
+    {
         heartPixmap = heartPixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     strawberryPixmap = loadImage("strawberry.png", "object");
-    if (!strawberryPixmap.isNull()) {
+    if (!strawberryPixmap.isNull())
+    {
         strawberryPixmap = strawberryPixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     bombPixmap = loadImage("bomb.png", "object");
-    if (!bombPixmap.isNull()) {
+    if (!bombPixmap.isNull())
+    {
         bombPixmap = bombPixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     keyPixmap = loadImage("key.png", "object");
-    if (!keyPixmap.isNull()) {
+    if (!keyPixmap.isNull())
+    {
         keyPixmap = keyPixmap.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
@@ -386,7 +394,8 @@ void MainWindow::clearCollectionBar()
  */
 void MainWindow::onToggleMusicClicked()
 {
-    if (!musicPlayer) return;
+    if (!musicPlayer)
+        return;
 
     if (musicPlayer->playbackState() == QMediaPlayer::PlayingState)
     {
@@ -402,7 +411,8 @@ void MainWindow::onToggleMusicClicked()
     }
 
     // 检查“万籁归于寂静”成就
-    if (!musicEnabled && !soundEnabled && achievementSystem) {
+    if (!musicEnabled && !soundEnabled && achievementSystem)
+    {
         achievementSystem->onBothSoundsOff();
     }
 }
@@ -427,13 +437,14 @@ void MainWindow::onToggleSoundClicked()
     }
 
     // 检查“万籁归于寂静”成就
-    if (!musicEnabled && !soundEnabled && achievementSystem) {
+    if (!musicEnabled && !soundEnabled && achievementSystem)
+    {
         achievementSystem->onBothSoundsOff();
     }
 }
 
 /**
- * @brief 处理“退出游戏”按钮点击
+ * @brief 处理"退出游戏"按钮点击
  *
  * 弹出确认对话框，用户点击“是”则退出应用程序。
  */
@@ -506,7 +517,8 @@ void MainWindow::playBackgroundMusic()
  */
 void MainWindow::onAchievementClicked()
 {
-    if (!achievementSystem) return;
+    if (!achievementSystem)
+        return;
 
     QDialog dialog(this);
     dialog.setWindowTitle("成就系统");
@@ -516,7 +528,8 @@ void MainWindow::onAchievementClicked()
 
     // 统计信息
     PlayerStats stats;
-    if (DatabaseManager::instance().loadPlayer(currentPlayerId, stats)) {
+    if (DatabaseManager::instance().loadPlayer(currentPlayerId, stats))
+    {
         QGroupBox *statsGroup = new QGroupBox("游戏统计");
         QVBoxLayout *statsLayout = new QVBoxLayout(statsGroup);
         statsLayout->addWidget(new QLabel(QString("死亡次数: %1").arg(stats.deathCount)));
@@ -548,7 +561,8 @@ void MainWindow::onAchievementClicked()
     QList<AchievementInfo> achievements = achievementSystem->getAllAchievementsWithStatus();
     table->setRowCount(achievements.size());
 
-    for (int i = 0; i < achievements.size(); i++) {
+    for (int i = 0; i < achievements.size(); i++)
+    {
         const AchievementInfo& a = achievements[i];
 
         QString displayName = a.name;
@@ -602,7 +616,8 @@ void MainWindow::onAchievementClicked()
             "这将清除你所有的统计信息和已完成的成就，你确定吗？",
             QMessageBox::Yes | QMessageBox::No
         );
-        if (reply == QMessageBox::Yes) {
+        if (reply == QMessageBox::Yes)
+        {
             DatabaseManager::instance().resetPlayerStats(currentPlayerId);
             DatabaseManager::instance().resetPlayerAchievements(currentPlayerId);
             dialog.accept();
@@ -619,7 +634,8 @@ void MainWindow::onAchievementClicked()
  */
 void MainWindow::onPlayerDied(bool diedByBomb)
 {
-    if (achievementSystem) {
+    if (achievementSystem)
+    {
         achievementSystem->onPlayerDied(diedByBomb);
     }
 }
@@ -632,7 +648,8 @@ void MainWindow::onPlayerDied(bool diedByBomb)
  */
 void MainWindow::onGameCleared(int health, int strawberries, bool bombPlacedThisRun)
 {
-    if (achievementSystem) {
+    if (achievementSystem)
+    {
         GameClearContext ctx;
         ctx.healthAtEnd = health;
         ctx.maxHealth = 3;
@@ -651,7 +668,8 @@ void MainWindow::onGameCleared(int health, int strawberries, bool bombPlacedThis
  */
 void MainWindow::onAllFogRevealed()
 {
-    if (achievementSystem) {
+    if (achievementSystem)
+    {
         achievementSystem->onAllFogRevealed();
     }
 }
@@ -663,7 +681,8 @@ void MainWindow::onAllFogRevealed()
  */
 void MainWindow::onSecretCodeEntered()
 {
-    if (achievementSystem) {
+    if (achievementSystem)
+    {
         achievementSystem->onSecretCodeEntered();
     }
 }
@@ -675,9 +694,11 @@ void MainWindow::onSecretCodeEntered()
  */
 void MainWindow::onPlayTimeTick()
 {
-    if (currentPlayerId >= 0) {
+    if (currentPlayerId >= 0)
+    {
         DatabaseManager::instance().addPlayTime(currentPlayerId, 60);
-        if (achievementSystem) {
+        if (achievementSystem)
+        {
             achievementSystem->checkAchievements();
         }
     }
@@ -715,7 +736,8 @@ void MainWindow::onAIAssistantClicked()
 
     // API Key 输入区域（如果未配置）
     QLineEdit *apiKeyEdit = nullptr;
-    if (aiManager && !aiManager->isBusy()) {
+    if (aiManager && !aiManager->isBusy())
+    {
         QWidget *apiKeyRow = new QWidget();
         QHBoxLayout *apiKeyLayout = new QHBoxLayout(apiKeyRow);
         apiKeyLayout->setContentsMargins(0, 0, 0, 0);
@@ -726,7 +748,8 @@ void MainWindow::onAIAssistantClicked()
         // 自动填充上次保存的 API Key
         QSettings aiSettings("LostMistRealm", "LostMistRealm");
         QString lastKey = aiSettings.value("ai/apiKey").toString();
-        if (!lastKey.isEmpty()) {
+        if (!lastKey.isEmpty())
+        {
             apiKeyEdit->setText(lastKey);
         }
         apiKeyLayout->addWidget(apiKeyEdit);
@@ -783,10 +806,12 @@ void MainWindow::onAIAssistantClicked()
     // 发送按钮点击
     connect(sendBtn, &QPushButton::clicked, [&]() {
         QString question = questionEdit->text().trimmed();
-        if (question.isEmpty()) return;
+        if (question.isEmpty())
+            return;
 
         // 如果用户填写了 API Key，则更新配置并持久化保存
-        if (apiKeyEdit && !apiKeyEdit->text().trimmed().isEmpty()) {
+        if (apiKeyEdit && !apiKeyEdit->text().trimmed().isEmpty())
+        {
             QString newKey = apiKeyEdit->text().trimmed();
             aiManager->setApiKey(newKey);
             QSettings saveSettings("LostMistRealm", "LostMistRealm");
@@ -794,7 +819,8 @@ void MainWindow::onAIAssistantClicked()
         }
 
         // 检查 API Key
-        if (aiManager->isBusy()) {
+        if (aiManager->isBusy())
+        {
             chatDisplay->append(QStringLiteral("【系统】正在等待AI回复，请稍候...\n"));
             return;
         }

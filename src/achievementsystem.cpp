@@ -28,7 +28,8 @@ QList<AchievementInfo> AchievementSystem::getAllAchievementsWithStatus()
         DatabaseManager::instance().getAllAchievements();
     QList<int> unlockedIds = DatabaseManager::instance().getUnlockedAchievements(m_playerId);
 
-    for (const auto& def : allAchievements) {
+    for (const auto& def : allAchievements)
+    {
         AchievementInfo info;
         info.id = def.id;
         info.name = def.name;
@@ -156,10 +157,13 @@ void AchievementSystem::onGameCleared(const GameClearContext& ctx)
         return;
 
     // 更新连续无伤通关计数
-    if (ctx.healthAtEnd >= ctx.maxHealth) {
+    if (ctx.healthAtEnd >= ctx.maxHealth)
+    {
         stats.consecutiveNoDamageClears++;
         DatabaseManager::instance().setConsecutiveNoDamageClears(m_playerId, stats.consecutiveNoDamageClears);
-    } else {
+    }
+    else
+    {
         stats.consecutiveNoDamageClears = 0;
         DatabaseManager::instance().setConsecutiveNoDamageClears(m_playerId, 0);
     }
@@ -260,9 +264,11 @@ void AchievementSystem::checkMetaAchievement()
 
     // 30. 与心爱的你行至世界尽头 - 完成所有其他成就（29/30时触发，因为30本身不算在内）
     // 当除了成就30以外的所有成就都已解锁时触发
-    if (total > 0 && unlocked >= total - 1) {
+    if (total > 0 && unlocked >= total - 1)
+    {
         // 检查是否只差成就30
-        if (!DatabaseManager::instance().isAchievementUnlocked(m_playerId, 30)) {
+        if (!DatabaseManager::instance().isAchievementUnlocked(m_playerId, 30))
+        {
             tryUnlock(30, "与心爱的你行至世界尽头", "完成所有成就");
         }
     }
@@ -276,7 +282,8 @@ void AchievementSystem::checkMetaAchievement()
  */
 void AchievementSystem::tryUnlock(int achievementId, const QString& name, const QString& description)
 {
-    if (DatabaseManager::instance().unlockAchievement(m_playerId, achievementId)) {
+    if (DatabaseManager::instance().unlockAchievement(m_playerId, achievementId))
+    {
         emit achievementUnlocked(name, description);
         qDebug() << "Achievement unlocked:" << name;
 

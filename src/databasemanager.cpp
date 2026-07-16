@@ -33,12 +33,14 @@ bool DatabaseManager::initialize(const QString& dbPath)
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(dbPath);
 
-    if (!db.open()) {
+    if (!db.open())
+    {
         qDebug() << "Failed to open database:" << db.lastError().text();
         return false;
     }
 
-    if (!createTables()) {
+    if (!createTables())
+    {
         return false;
     }
 
@@ -48,7 +50,8 @@ bool DatabaseManager::initialize(const QString& dbPath)
 /** @brief 关闭数据库连接 */
 void DatabaseManager::close()
 {
-    if (db.isOpen()) {
+    if (db.isOpen())
+    {
         db.close();
     }
 }
@@ -77,7 +80,8 @@ bool DatabaseManager::createTables()
         "total_play_time INTEGER DEFAULT 0,"
         "consecutive_no_damage_clears INTEGER DEFAULT 0"
         ")"
-    )) {
+    ))
+    {
         qDebug() << "Failed to create player table:" << query.lastError().text();
         return false;
     }
@@ -90,7 +94,8 @@ bool DatabaseManager::createTables()
         "description TEXT,"
         "is_hidden INTEGER DEFAULT 0"
         ")"
-    )) {
+    ))
+    {
         qDebug() << "Failed to create achievement table:" << query.lastError().text();
         return false;
     }
@@ -105,7 +110,8 @@ bool DatabaseManager::createTables()
         "FOREIGN KEY(player_id) REFERENCES player(id),"
         "FOREIGN KEY(achievement_id) REFERENCES achievement(id)"
         ")"
-    )) {
+    ))
+    {
         qDebug() << "Failed to create player_achievement table:" << query.lastError().text();
         return false;
     }
@@ -128,12 +134,16 @@ bool DatabaseManager::initDefaultAchievements()
 {
     QSqlQuery query;
     query.exec("SELECT COUNT(*) FROM achievement");
-    if (query.next() && query.value(0).toInt() > 0) {
+    if (query.next() && query.value(0).toInt() > 0)
+    {
         return true; // 已有成就数据
     }
 
     // 插入30个成就
-    struct AchDef { int id; const char* name; const char* desc; int hidden; };
+    struct AchDef
+    {
+        int id; const char* name; const char* desc; int hidden;
+    };
     QList<AchDef> achs = {
         {1,  "破晓的凯旋", "通关1次游戏", 0},
         {2,  "终将踏破万重迷雾", "通关50次游戏", 0},
@@ -169,7 +179,8 @@ bool DatabaseManager::initDefaultAchievements()
 
     QSqlQuery ins;
     ins.prepare("INSERT INTO achievement (id, name, description, is_hidden) VALUES (:id, :name, :desc, :hidden)");
-    for (const auto& a : achs) {
+    for (const auto& a : achs)
+    {
         ins.bindValue(":id", a.id);
         ins.bindValue(":name", QString::fromUtf8(a.name));
         ins.bindValue(":desc", QString::fromUtf8(a.desc));
@@ -190,7 +201,8 @@ int DatabaseManager::createPlayer(const QString& name)
     query.prepare("INSERT INTO player (name) VALUES (:name)");
     query.bindValue(":name", name);
 
-    if (!query.exec()) {
+    if (!query.exec())
+    {
         qDebug() << "Failed to create player:" << query.lastError().text();
         return -1;
     }
@@ -208,7 +220,8 @@ int DatabaseManager::getOrCreatePlayer(const QString& name)
     query.prepare("SELECT id FROM player WHERE name = :name LIMIT 1");
     query.bindValue(":name", name);
 
-    if (query.exec() && query.next()) {
+    if (query.exec() && query.next())
+    {
         return query.value(0).toInt();
     }
 
@@ -225,7 +238,8 @@ bool DatabaseManager::loadPlayer(int playerId, PlayerStats& stats)
     query.prepare("SELECT * FROM player WHERE id = :id");
     query.bindValue(":id", playerId);
 
-    if (!query.exec() || !query.next()) {
+    if (!query.exec() || !query.next())
+    {
         return false;
     }
 
@@ -364,7 +378,8 @@ bool DatabaseManager::setConsecutiveNoDamageClears(int playerId, int count)
  */
 bool DatabaseManager::unlockAchievement(int playerId, int achievementId)
 {
-    if (isAchievementUnlocked(playerId, achievementId)) {
+    if (isAchievementUnlocked(playerId, achievementId))
+    {
         return false; // 已解锁，不再次通知
     }
 
@@ -391,7 +406,8 @@ bool DatabaseManager::isAchievementUnlocked(int playerId, int achievementId)
     query.bindValue(":player_id", playerId);
     query.bindValue(":achievement_id", achievementId);
 
-    if (query.exec() && query.next()) {
+    if (query.exec() && query.next())
+    {
         return query.value(0).toInt() > 0;
     }
     return false;
@@ -405,8 +421,10 @@ QList<int> DatabaseManager::getUnlockedAchievements(int playerId)
     query.prepare("SELECT achievement_id FROM player_achievement WHERE player_id = :player_id");
     query.bindValue(":player_id", playerId);
 
-    if (query.exec()) {
-        while (query.next()) {
+    if (query.exec())
+    {
+        while (query.next())
+        {
             result.append(query.value(0).toInt());
         }
     }
@@ -420,7 +438,8 @@ int DatabaseManager::getUnlockedAchievementCount(int playerId)
     query.prepare("SELECT COUNT(*) FROM player_achievement WHERE player_id = :player_id");
     query.bindValue(":player_id", playerId);
 
-    if (query.exec() && query.next()) {
+    if (query.exec() && query.next())
+    {
         return query.value(0).toInt();
     }
     return 0;
@@ -433,7 +452,8 @@ QList<DatabaseManager::AchievementDef> DatabaseManager::getAllAchievements()
     QSqlQuery query;
     query.exec("SELECT id, name, description, is_hidden FROM achievement ORDER BY id");
 
-    while (query.next()) {
+    while (query.next())
+    {
         AchievementDef def;
         def.id = query.value("id").toInt();
         def.name = query.value("name").toString();
@@ -466,7 +486,8 @@ bool DatabaseManager::resetPlayerStats(int playerId)
         "WHERE id = :id"
     );
     query.bindValue(":id", playerId);
-    if (!query.exec()) {
+    if (!query.exec())
+    {
         qDebug() << "Failed to reset player stats:" << query.lastError().text();
         return false;
     }
@@ -483,7 +504,8 @@ bool DatabaseManager::resetPlayerAchievements(int playerId)
     QSqlQuery query;
     query.prepare("DELETE FROM player_achievement WHERE player_id = :player_id");
     query.bindValue(":player_id", playerId);
-    if (!query.exec()) {
+    if (!query.exec())
+    {
         qDebug() << "Failed to reset player achievements:" << query.lastError().text();
         return false;
     }

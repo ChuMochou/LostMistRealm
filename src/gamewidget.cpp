@@ -26,37 +26,37 @@ QPixmap loadImage(const QString& filename, const QString& subdir)
 
     filePath = appDir + "/resources/images/" + subdir + "/" + filename;
     QPixmap pixmap(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = appDir + "/../resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = appDir + "/../../resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = appDir + "/../../../resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = appDir + "/../../../../resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = QDir::currentPath() + "/resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = QDir::currentPath() + "/../resources/images/" + subdir + "/" + filename;
     pixmap.load(filePath);
-    if(!pixmap.isNull())
+    if (!pixmap.isNull())
         return pixmap;
 
     filePath = QDir::currentPath() + "/../../resources/images/" + subdir + "/" + filename;
@@ -75,13 +75,13 @@ QPixmap loadImage(const QString& filename, const QString& subdir)
  */
 QPixmap extractTile(const QPixmap& spriteSheet, int row, int col, int tileSize = TILE_SIZE)
 {
-    if(spriteSheet.isNull())
+    if (spriteSheet.isNull())
         return QPixmap();
 
     int x = col * tileSize;
     int y = row * tileSize;
 
-    if(x + tileSize > spriteSheet.width() || y + tileSize > spriteSheet.height())
+    if (x + tileSize > spriteSheet.width() || y + tileSize > spriteSheet.height())
         return QPixmap();
 
     QPixmap tile = spriteSheet.copy(x, y, tileSize, tileSize);
@@ -100,63 +100,63 @@ GameWidget::GameWidget(QWidget *parent)
     setFocusPolicy(Qt::StrongFocus);
 
     grassPixmap = loadImage("grass.png", "floor");
-    if(!grassPixmap.isNull())
+    if (!grassPixmap.isNull())
     {
         grassPixmap = grassPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     pathPixmap = loadImage("path.png");
-    if(!pathPixmap.isNull())
+    if (!pathPixmap.isNull())
         pathPixmap = pathPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     treePixmap = loadImage("tree.png", "floor");
-    if(!treePixmap.isNull())
+    if (!treePixmap.isNull())
     {
         treePixmap = treePixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     waterPixmap = loadImage("water.png", "floor");
-    if(!waterPixmap.isNull())
+    if (!waterPixmap.isNull())
     {
         waterPixmap = waterPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     stonePixmap = loadImage("stone.png", "floor");
-    if(!stonePixmap.isNull())
+    if (!stonePixmap.isNull())
     {
         stonePixmap = stonePixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     endPixmap = loadImage("house.png", "floor");
-    if(!endPixmap.isNull())
+    if (!endPixmap.isNull())
         endPixmap = endPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     doorPixmap = loadImage("door.png", "floor");
-    if(!doorPixmap.isNull())
+    if (!doorPixmap.isNull())
     {
         doorPixmap = doorPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     keyPixmap = loadImage("key.png", "object");
-    if(!keyPixmap.isNull())
+    if (!keyPixmap.isNull())
     {
         keyPixmap = keyPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     strawberryPixmap = loadImage("strawberry.png", "object");
-    if(!strawberryPixmap.isNull())
+    if (!strawberryPixmap.isNull())
     {
         strawberryPixmap = strawberryPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     bombPixmap = loadImage("bomb.png", "object");
-    if(!bombPixmap.isNull())
+    if (!bombPixmap.isNull())
     {
         bombPixmap = bombPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 
     fogPixmap = loadImage("cloud.png", "floor");
-    if(!fogPixmap.isNull())
+    if (!fogPixmap.isNull())
     {
         fogPixmap = fogPixmap.scaled(CELL_SIZE, CELL_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
@@ -173,7 +173,7 @@ GameWidget::GameWidget(QWidget *parent)
         }
     }
 
-    if(grassPixmap.isNull() && pathPixmap.isNull() && treePixmap.isNull())
+    if (grassPixmap.isNull() && pathPixmap.isNull() && treePixmap.isNull())
     {
         useTextures = false;
     }
@@ -282,9 +282,9 @@ void GameWidget::paintEvent(QPaintEvent *)
             float fogOpacity = maze.fogAlpha[row][col] / 255.0f;
             float contentOpacity = 1.0f - fogOpacity;
 
-            if(useTextures)
+            if (useTextures)
             {
-                if(!grassPixmap.isNull())
+                if (!grassPixmap.isNull())
                     painter.drawPixmap(cell, grassPixmap);
                 else
                     painter.fillRect(cell, QColor(170, 215, 120));
@@ -296,7 +296,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Path:
                     painter.setOpacity(contentOpacity);
-                    if(!pathPixmap.isNull())
+                    if (!pathPixmap.isNull())
                         painter.drawPixmap(cell, pathPixmap);
                     else
                         painter.fillRect(cell, QColor(182, 152, 102));
@@ -305,7 +305,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Tree:
                     painter.setOpacity(contentOpacity);
-                    if(!treePixmap.isNull())
+                    if (!treePixmap.isNull())
                         painter.drawPixmap(cell, treePixmap);
                     else
                         painter.fillRect(cell, QColor(48, 110, 52));
@@ -314,7 +314,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Water:
                     painter.setOpacity(contentOpacity);
-                    if(!waterPixmap.isNull())
+                    if (!waterPixmap.isNull())
                         painter.drawPixmap(cell, waterPixmap);
                     else
                         painter.fillRect(cell, QColor(78, 165, 235));
@@ -323,7 +323,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Stone:
                     painter.setOpacity(contentOpacity);
-                    if(!stonePixmap.isNull())
+                    if (!stonePixmap.isNull())
                         painter.drawPixmap(cell, stonePixmap);
                     else
                         painter.fillRect(cell, QColor(135, 135, 140));
@@ -335,7 +335,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::End:
                     painter.setOpacity(contentOpacity);
-                    if(!endPixmap.isNull())
+                    if (!endPixmap.isNull())
                         painter.drawPixmap(cell, endPixmap);
                     else
                         painter.fillRect(cell, QColor(250, 230, 90));
@@ -344,7 +344,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Door:
                     painter.setOpacity(contentOpacity);
-                    if(!doorPixmap.isNull())
+                    if (!doorPixmap.isNull())
                         painter.drawPixmap(cell, doorPixmap);
                     else
                         painter.fillRect(cell, QColor(30, 30, 30));
@@ -353,7 +353,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Key:
                     painter.setOpacity(contentOpacity);
-                    if(!keyPixmap.isNull())
+                    if (!keyPixmap.isNull())
                         painter.drawPixmap(cell, keyPixmap);
                     else
                         painter.fillRect(cell, QColor(255, 215, 0));
@@ -362,7 +362,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Strawberry:
                     painter.setOpacity(contentOpacity);
-                    if(!strawberryPixmap.isNull())
+                    if (!strawberryPixmap.isNull())
                         painter.drawPixmap(cell, strawberryPixmap);
                     else
                         painter.fillRect(cell, QColor(255, 105, 180));
@@ -371,7 +371,7 @@ void GameWidget::paintEvent(QPaintEvent *)
 
                 case Maze::Bomb:
                     painter.setOpacity(contentOpacity);
-                    if(!bombPixmap.isNull())
+                    if (!bombPixmap.isNull())
                         painter.drawPixmap(cell, bombPixmap);
                     else
                         painter.fillRect(cell, QColor(50, 50, 50));
@@ -385,7 +385,7 @@ void GameWidget::paintEvent(QPaintEvent *)
                 if (maze.fogAlpha[row][col] > 0)
                 {
                     painter.setOpacity(fogOpacity);
-                    if(!fogPixmap.isNull())
+                    if (!fogPixmap.isNull())
                         painter.drawPixmap(cell, fogPixmap);
                     else
                         painter.fillRect(cell, QColor(255, 255, 255));
@@ -481,7 +481,7 @@ void GameWidget::paintEvent(QPaintEvent *)
                      playerSize,
                      playerSize);
 
-    if(useTextures && !playerSpriteSheet.isNull())
+    if (useTextures && !playerSpriteSheet.isNull())
     {
         int frameWidth = playerSpriteSheet.width() / 4;
         int frameHeight = playerSpriteSheet.height() / 4;
@@ -566,7 +566,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
     int newCol = player.position.x();
     Player::Direction newDirection = player.direction;
 
-    switch(event->key())
+    switch (event->key())
     {
     case Qt::Key_W:
     case Qt::Key_Up:
@@ -604,7 +604,8 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
         secretCodeBuffer += 'b';
         if (secretCodeBuffer.length() > 12)
             secretCodeBuffer = secretCodeBuffer.right(12);
-        if (secretCodeBuffer == "wwssaaddbaba") {
+        if (secretCodeBuffer == "wwssaaddbaba")
+        {
             secretCodeBuffer = "";
             emit secretCodeEntered();
         }
@@ -617,16 +618,17 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
     // 检查秘籍 "wwssaaddbaba"
     if (secretCodeBuffer.length() > 12)
         secretCodeBuffer = secretCodeBuffer.right(12);
-    if (secretCodeBuffer == "wwssaaddbaba") {
+    if (secretCodeBuffer == "wwssaaddbaba")
+    {
         secretCodeBuffer = "";
         emit secretCodeEntered();
     }
 
     player.setDirection(newDirection);
 
-    if(maze.isWalkable(newRow, newCol, player.hasKey))
+    if (maze.isWalkable(newRow, newCol, player.hasKey))
     {
-        if(!player.isMoving)
+        if (!player.isMoving)
         {
             player.targetRow = newRow;
             player.targetCol = newCol;
@@ -634,7 +636,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
             frameTimer->start(50);
         }
     }
-    else if(maze.map[newRow][newCol] == Maze::Door)
+    else if (maze.map[newRow][newCol] == Maze::Door)
     {
         QMessageBox::information(this,
                                  "提示",
@@ -663,7 +665,7 @@ void GameWidget::updateFrame()
  */
 void GameWidget::updateAnimation()
 {
-    if(player.isMoving)
+    if (player.isMoving)
     {
         float targetX = player.targetCol;
         float targetY = player.targetRow;
@@ -673,7 +675,7 @@ void GameWidget::updateAnimation()
 
         float distance = sqrt(dx * dx + dy * dy);
 
-        if(distance < MOVE_SPEED)
+        if (distance < MOVE_SPEED)
         {
             player.x = targetX;
             player.y = targetY;
@@ -693,15 +695,18 @@ void GameWidget::updateAnimation()
             // 检查是否全部迷雾点亮
             {
                 bool allVisible = true;
-                for (int r = 0; r < Maze::ROWS && allVisible; r++) {
-                    for (int c = 0; c < Maze::COLS && allVisible; c++) {
-                        if (!maze.visible[r][c]) allVisible = false;
+                for (int r = 0; r < Maze::ROWS && allVisible; r++)
+                {
+                    for (int c = 0; c < Maze::COLS && allVisible; c++)
+                    {
+                        if (!maze.visible[r][c])
+                            allVisible = false;
                     }
                 }
                 if (allVisible) emit allFogRevealed();
             }
 
-            if(maze.map[row][col] == Maze::Key)
+            if (maze.map[row][col] == Maze::Key)
             {
                 player.hasKey = true;
                 maze.map[row][col] = Maze::Grass;
@@ -714,7 +719,7 @@ void GameWidget::updateAnimation()
                 emit itemCollected("收集到1把钥匙");
                 emit statusChanged(player.health, 3, player.strawberryCount, 3, player.bombCount, 6, 1, 1);
             }
-            else if(maze.map[row][col] == Maze::Strawberry)
+            else if (maze.map[row][col] == Maze::Strawberry)
             {
                 player.strawberryCount++;
                 maze.map[row][col] = Maze::Grass;
@@ -728,7 +733,7 @@ void GameWidget::updateAnimation()
                 emit itemCollected("收集到1颗草莓");
                 emit statusChanged(player.health, 3, player.strawberryCount, 3, player.bombCount, 6, player.hasKey ? 1 : 0, 1);
             }
-            else if(maze.map[row][col] == Maze::Bomb)
+            else if (maze.map[row][col] == Maze::Bomb)
             {
                 player.bombCount += 2;
                 maze.map[row][col] = Maze::Grass;
@@ -741,30 +746,30 @@ void GameWidget::updateAnimation()
                 emit itemCollected("收集到2个炸弹");
                 emit statusChanged(player.health, 3, player.strawberryCount, 3, player.bombCount, 6, player.hasKey ? 1 : 0, 1);
             }
-            else if(maze.map[row][col] == Maze::Door)
+            else if (maze.map[row][col] == Maze::Door)
             {
                 maze.map[row][col] = Maze::Grass;
             }
-            else if(maze.map[row][col] == Maze::End)
+            else if (maze.map[row][col] == Maze::End)
             {
                 DatabaseManager::instance().incrementClear(dbPlayerId);
                 emit gameCleared(player.health, player.strawberryCount, bombPlacedThisRun);
 
                 QString message = QString("成功走出迷宫！\n本次收集了 %1/3 颗草莓\n").arg(player.strawberryCount);
 
-                if(player.strawberryCount == 0)
+                if (player.strawberryCount == 0)
                 {
                     message += "没有找到任何草莓，这对你来说太难了？";
                 }
-                else if(player.strawberryCount == 1)
+                else if (player.strawberryCount == 1)
                 {
                     message += "只找到了一颗草莓，继续努力！";
                 }
-                else if(player.strawberryCount == 2)
+                else if (player.strawberryCount == 2)
                 {
                     message += "找到了两颗草莓，差一点就完美了！";
                 }
-                else if(player.strawberryCount == 3)
+                else if (player.strawberryCount == 3)
                 {
                     message += "找到了所有草莓！这对你来说轻而易举！";
                 }

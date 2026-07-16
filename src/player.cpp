@@ -51,7 +51,7 @@ void Player::stopMoveAnimation()
  */
 void Player::nextFrame()
 {
-    if(isMoving)
+    if (isMoving)
     {
         currentFrame = (currentFrame + 1) % 4;
     }

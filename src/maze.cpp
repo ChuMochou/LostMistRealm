@@ -22,45 +22,45 @@ Maze::Maze()
  */
 void Maze::initTestMap()
 {
-    for(int row = 0; row < ROWS; row++)
+    for (int row = 0; row < ROWS; row++)
     {
-        for(int col = 0; col < COLS; col++)
+        for (int col = 0; col < COLS; col++)
         {
             map[row][col] = Grass;
         }
     }
 
-    for(int col = 0; col < COLS; col++)
+    for (int col = 0; col < COLS; col++)
     {
         map[0][col] = Path;
     }
 
-    for(int row = 0; row < ROWS; row++)
+    for (int row = 0; row < ROWS; row++)
     {
         map[row][COLS - 1] = Path;
     }
 
-    for(int i = 3; i < 10; i++)
+    for (int i = 3; i < 10; i++)
     {
         map[5][i] = Tree;
     }
 
-    for(int i = 12; i < 19; i++)
+    for (int i = 12; i < 19; i++)
     {
         map[12][i] = Tree;
     }
 
-    for(int i = 2; i < 8; i++)
+    for (int i = 2; i < 8; i++)
     {
         map[9][i] = Water;
     }
 
-    for(int i = 13; i < 20; i++)
+    for (int i = 13; i < 20; i++)
     {
         map[i][5] = Water;
     }
 
-    for(int i = 6; i < 13; i++)
+    for (int i = 6; i < 13; i++)
     {
         map[7][i] = Stone;
     }
@@ -94,7 +94,7 @@ void Maze::generateRandomMap()
  */
 bool Maze::isWalkable(int row, int col, bool hasKey) const
 {
-    if(row < 0 || row >= ROWS || col < 0 || col >= COLS)
+    if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
     {
         return false;
     }
@@ -119,9 +119,9 @@ bool Maze::isWalkable(int row, int col, bool hasKey) const
  */
 void Maze::initVisibility()
 {
-    for(int row = 0; row < ROWS; row++)
+    for (int row = 0; row < ROWS; row++)
     {
-        for(int col = 0; col < COLS; col++)
+        for (int col = 0; col < COLS; col++)
         {
             visible[row][col] = false;
             fogAlpha[row][col] = 255;
@@ -149,15 +149,15 @@ void Maze::initVisibility()
  */
 void Maze::updateVisibility(int playerRow, int playerCol)
 {
-    for(int dr = -viewRadius; dr <= viewRadius; dr++)
+    for (int dr = -viewRadius; dr <= viewRadius; dr++)
     {
-        for(int dc = -viewRadius; dc <= viewRadius; dc++)
+        for (int dc = -viewRadius; dc <= viewRadius; dc++)
         {
             int row = playerRow + dr;
             int col = playerCol + dc;
-            if(row >= 0 && row < ROWS && col >= 0 && col < COLS)
+            if (row >= 0 && row < ROWS && col >= 0 && col < COLS)
             {
-                if(!visible[row][col])
+                if (!visible[row][col])
                 {
                     visible[row][col] = true;
                     isFogAnimating[row][col] = true;
@@ -166,10 +166,10 @@ void Maze::updateVisibility(int playerRow, int playerCol)
         }
     }
 
-    if(historyCount >= maxVisibleSteps)
+    if (historyCount >= maxVisibleSteps)
     {
         Position oldest = history[0];
-        for(int i = 0; i < historyCount - 1; i++)
+        for (int i = 0; i < historyCount - 1; i++)
         {
             history[i] = history[i + 1];
         }
@@ -181,27 +181,29 @@ void Maze::updateVisibility(int playerRow, int playerCol)
             {
                 int row = oldest.row + dr;
                 int col = oldest.col + dc;
-                if(row >= 0 && row < ROWS && col >= 0 && col < COLS)
+                if (row >= 0 && row < ROWS && col >= 0 && col < COLS)
                 {
                     bool stillVisible = false;
-                    for(int i = 0; i < historyCount; i++)
+                    for (int i = 0; i < historyCount; i++)
                     {
                         Position pos = history[i];
-                        for(int hd = -viewRadius; hd <= viewRadius; hd++)
+                        for (int hd = -viewRadius; hd <= viewRadius; hd++)
                         {
-                            for(int hc = -viewRadius; hc <= viewRadius; hc++)
+                            for (int hc = -viewRadius; hc <= viewRadius; hc++)
                             {
-                                if(row == pos.row + hd && col == pos.col + hc)
+                                if (row == pos.row + hd && col == pos.col + hc)
                                 {
                                     stillVisible = true;
                                     break;
                                 }
                             }
-                            if(stillVisible) break;
+                            if (stillVisible)
+                                break;
                         }
-                        if(stillVisible) break;
+                        if (stillVisible)
+                            break;
                     }
-                    if(!stillVisible && visible[row][col])
+                    if (!stillVisible && visible[row][col])
                     {
                         visible[row][col] = false;
                         isFogAnimating[row][col] = true;
@@ -211,7 +213,7 @@ void Maze::updateVisibility(int playerRow, int playerCol)
         }
     }
 
-    if(historyCount < MAX_HISTORY_SIZE)
+    if (historyCount < MAX_HISTORY_SIZE)
     {
         history[historyCount++] = Position(playerRow, playerCol);
     }
@@ -227,7 +229,8 @@ void Maze::updateVisibility(int playerRow, int playerCol)
 void Maze::setMaxVisibleSteps(int steps)
 {
     maxVisibleSteps = steps;
-    if(maxVisibleSteps < 1) maxVisibleSteps = 1;
+    if (maxVisibleSteps < 1)
+        maxVisibleSteps = 1;
 }
 
 /**
@@ -240,6 +243,8 @@ void Maze::setMaxVisibleSteps(int steps)
 void Maze::setViewRadius(int radius)
 {
     viewRadius = radius;
-    if(viewRadius < 0) viewRadius = 0;
-    if(viewRadius > 10) viewRadius = 10;
+    if (viewRadius < 0)
+        viewRadius = 0;
+    if (viewRadius > 10)
+        viewRadius = 10;
 }

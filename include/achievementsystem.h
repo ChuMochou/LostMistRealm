@@ -9,7 +9,8 @@
 /**
  * @brief 成就信息结构体，包含成就 ID、名称、描述和解锁状态
  */
-struct AchievementInfo {
+struct AchievementInfo
+{
     int id;              ///< 成就 ID
     QString name;        ///< 成就名称
     QString description; ///< 成就描述
@@ -20,7 +21,8 @@ struct AchievementInfo {
 /**
  * @brief 游戏通关上下文，用于成就检查时传递通关时的状态信息
  */
-struct GameClearContext {
+struct GameClearContext
+{
     int healthAtEnd;          ///< 通关时的生命值
     int maxHealth;            ///< 最大生命值
     int strawberriesCollected;///< 本局收集的草莓数

@@ -68,7 +68,8 @@ QString AIManager::buildSystemPrompt() const
     );
 
     // 如果有动态上下文（玩家位置、道具、统计信息等），附加在末尾
-    if (!m_gameContext.isEmpty()) {
+    if (!m_gameContext.isEmpty())
+    {
         prompt += QStringLiteral("\n\n当前游戏状态信息：\n") + m_gameContext;
     }
 
@@ -130,12 +131,14 @@ bool AIManager::parseResponse(const QByteArray &jsonData, QString &answer) const
     QJsonParseError parseError;
     QJsonDocument doc = QJsonDocument::fromJson(jsonData, &parseError);
 
-    if (parseError.error != QJsonParseError::NoError) {
+    if (parseError.error != QJsonParseError::NoError)
+    {
         qWarning() << "[AIManager] JSON 解析失败:" << parseError.errorString();
         return false;
     }
 
-    if (!doc.isObject()) {
+    if (!doc.isObject())
+    {
         qWarning() << "[AIManager] JSON 根节点不是对象";
         return false;
     }
@@ -143,7 +146,8 @@ bool AIManager::parseResponse(const QByteArray &jsonData, QString &answer) const
     QJsonObject root = doc.object();
 
     // 检查是否有错误字段
-    if (root.contains("error")) {
+    if (root.contains("error"))
+    {
         QJsonObject errObj = root["error"].toObject();
         QString errMsg = errObj["message"].toString();
         qWarning() << "[AIManager] 接口返回错误:" << errMsg;
@@ -151,7 +155,8 @@ bool AIManager::parseResponse(const QByteArray &jsonData, QString &answer) const
     }
 
     QJsonArray choices = root["choices"].toArray();
-    if (choices.isEmpty()) {
+    if (choices.isEmpty())
+    {
         qWarning() << "[AIManager] choices 数组为空";
         return false;
     }
@@ -169,13 +174,15 @@ bool AIManager::parseResponse(const QByteArray &jsonData, QString &answer) const
 void AIManager::ask(const QString &question)
 {
     // 防止重复请求
-    if (m_isBusy) {
+    if (m_isBusy)
+    {
         emit errorOccurred(QStringLiteral("正在等待AI回复，请稍后再试。"));
         return;
     }
 
     // 检查 API Key 是否已配置
-    if (m_apiKey.isEmpty()) {
+    if (m_apiKey.isEmpty())
+    {
         qWarning() << "[AIManager] API Key 未配置";
         emit errorOccurred(ERROR_MESSAGE);
         return;
@@ -208,7 +215,8 @@ void AIManager::onReplyFinished(QNetworkReply *reply)
     reply->deleteLater();
 
     // 处理网络层错误
-    if (reply->error() != QNetworkReply::NoError) {
+    if (reply->error() != QNetworkReply::NoError)
+    {
         qWarning() << "[AIManager] 网络错误:" << reply->errorString();
         emit errorOccurred(ERROR_MESSAGE);
         return;
@@ -216,7 +224,8 @@ void AIManager::onReplyFinished(QNetworkReply *reply)
 
     // 处理 HTTP 层错误
     int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (statusCode < 200 || statusCode >= 300) {
+    if (statusCode < 200 || statusCode >= 300)
+    {
         qWarning() << "[AIManager] HTTP 错误，状态码:" << statusCode;
         emit errorOccurred(ERROR_MESSAGE);
         return;
@@ -227,7 +236,8 @@ void AIManager::onReplyFinished(QNetworkReply *reply)
 
     // 解析 JSON
     QString answer;
-    if (!parseResponse(responseData, answer)) {
+    if (!parseResponse(responseData, answer))
+    {
         emit errorOccurred(ERROR_MESSAGE);
         return;
     }

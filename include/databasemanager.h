@@ -178,7 +178,8 @@ public:
     // --- 获取所有成就定义 ---
 
     /** @brief 成就定义结构体 */
-    struct AchievementDef {
+    struct AchievementDef
+    {
         int id;             ///< 成就 ID
         QString name;       ///< 成就名称
         QString description;///< 成就描述
