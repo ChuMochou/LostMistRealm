@@ -21,11 +21,18 @@ const int TILE_SIZE = 16;
  */
 QPixmap loadImage(const QString& filename, const QString& subdir)
 {
+    // 优先从 Qt 资源系统加载（内嵌到 exe，部署时无需额外文件）
+    QString resPath = ":/images/" + subdir + "/" + filename;
+    QPixmap pixmap(resPath);
+    if (!pixmap.isNull())
+        return pixmap;
+
+    // 回退：从文件系统加载（开发时使用）
     QString appDir = QCoreApplication::applicationDirPath();
     QString filePath;
 
     filePath = appDir + "/resources/images/" + subdir + "/" + filename;
-    QPixmap pixmap(filePath);
+    pixmap.load(filePath);
     if (!pixmap.isNull())
         return pixmap;
 

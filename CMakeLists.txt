@@ -38,6 +38,11 @@ install(TARGETS LostMistRealm
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
+# 部署 resources 目录（音频等需要从文件系统加载的资源）
+install(DIRECTORY resources/
+    DESTINATION ${CMAKE_INSTALL_BINDIR}/resources
+)
+
 qt_generate_deploy_app_script(
     TARGET LostMistRealm
     OUTPUT_SCRIPT deploy_script

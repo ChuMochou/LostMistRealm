@@ -1,17 +1,27 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
-<qresource>
-    <file alias="grass.png">resources/images/tiles/Grass.png</file>
-    <file alias="path.png">resources/images/tiles/path.png</file>
-    <file alias="tree.png">resources/images/tiles/tree.png</file>
-    <file alias="water.png">resources/images/tiles/water.png</file>
-    <file alias="stone.png">resources/images/tiles/stone.png</file>
-    <file alias="start.png">resources/images/tiles/start.png</file>
-    <file alias="end.png">resources/images/tiles/end.png</file>
-    <file alias="door.png">resources/images/tiles/door.png</file>
-    <file alias="key.png">resources/images/tiles/key.png</file>
-    <file alias="strawberry.png">resources/images/tiles/strawberry.png</file>
-    <file alias="fog.png">resources/images/tiles/fog.png</file>
-    <file alias="player.png">resources/images/player/player.png</file>
+<qresource prefix="/images">
+    <!-- floor -->
+    <file alias="floor/grass.png">resources/images/floor/grass.png</file>
+    <file alias="floor/cloud.png">resources/images/floor/cloud.png</file>
+    <file alias="floor/door.png">resources/images/floor/door.png</file>
+    <file alias="floor/house.png">resources/images/floor/house.png</file>
+    <file alias="floor/stone.png">resources/images/floor/stone.png</file>
+    <file alias="floor/tree.png">resources/images/floor/tree.png</file>
+    <file alias="floor/water.png">resources/images/floor/water.png</file>
+    <!-- object -->
+    <file alias="object/bomb.png">resources/images/object/bomb.png</file>
+    <file alias="object/key.png">resources/images/object/key.png</file>
+    <file alias="object/strawberry.png">resources/images/object/strawberry.png</file>
+    <!-- player -->
+    <file alias="player/heart.png">resources/images/player/heart.png</file>
+    <file alias="player/player.png">resources/images/player/player.png</file>
+    <!-- VFX -->
+    <file alias="VFX/bomb_1.png">resources/images/VFX/bomb_1.png</file>
+    <file alias="VFX/bomb_2.png">resources/images/VFX/bomb_2.png</file>
+    <file alias="VFX/bomb_3.png">resources/images/VFX/bomb_3.png</file>
+    <file alias="VFX/bomb_4.png">resources/images/VFX/bomb_4.png</file>
+    <file alias="VFX/bomb_5.png">resources/images/VFX/bomb_5.png</file>
+    <file alias="VFX/bomb_6.png">resources/images/VFX/bomb_6.png</file>
 </qresource>
 </RCC>
